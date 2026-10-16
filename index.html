@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Captura de Datos</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #999; padding: 6px 12px; }
+    th { background: #eee; }
+    #seccionTabla { display: none; }
+  </style>
+</head>
+<style>
+    select option {
+    display: none;
+    }
+    select:focus option, select:active option {
+    display: block;
+    }
+</style>
+<body>
+
+  <h2>Captura de Datos</h2>
+
+  <form id="formulario">
+    <input type="hidden" id="id">
+
+    <label for="nombre">Nombre:</label><br>
+    <input type="text" id="nombre" required><br><br>
+
+    <label for="edad">Edad:</label><br>
+    <input type="number" id="edad" required min="1" max="120"><br><br>
+
+
+    <!-- >>> CAMPO NUEVO: ANIMAL (1 de 6 en HTML)
+         Lista desplegable (<select>) para elegir opciones.
+         Para agregar más opciones, simplemente duplica una etiqueta <option>:
+         <option value="Elefante">Elefante</option>
+    -->
+
+  <label for="sueño">Horas de sueño:</label><br>
+    <select id="sueño" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Insuficientes">Insuficientes</option>
+      <option value="Adecuadas">Adecuadas</option>
+      <option value="Excesivas">Excesivas</option>
+    </select><br>
+
+
+  <label for="ocupacion">Ocupacion principal:</label><br>
+    <select id="ocupacion" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Estudiante">Estudiante</option>
+      <option value="Empleado">Empleado</option>
+      <option value="Independiente">Independiente</option>
+      <option value="Buscando empleo">Buscando empleo</option>
+   </select><br>
+
+
+  <label for="transporte">Metodo principal de transporte:</label><br>
+    <select id="transporte" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Automovil">Automovil</option>
+      <option value="Bicicleta">Bicicleta</option>
+      <option value="Autobus">Autobus</option>
+   </select><br>
+
+
+  <label for="red">Red social de mayor uso:</label><br>
+    <select id="red" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Instagram">Instagram</option>
+      <option value="Youtube">Youtube</option>
+      <option value="TikTok">TikTok</option>
+      <option value="Facebook">Facebook</option>
+   </select><br>
+
+
+  <label for="ejercicio">Frecuencia de ejercicio a la semana:</label><br>
+    <select id="ejercicio" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Alta">Alta</option>
+      <option value="Media">Media</option>
+      <option value="Baja">Baja</option>
+      <option value="Nula">Nula</option>
+   </select><br>
+
+
+  <label for="agua">Consumo de agua diario:</label><br>
+    <select id="agua" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Suficiente">Suficiente</option>
+      <option value="Medio">Medio</option>
+      <option value="Bajo">Bajo</option>
+    </select><br>
+
+
+  <label for="pantalla">Frecuencia de uso de pantallas:</label><br>
+    <select id="pantalla" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Poco">Poco</option>
+      <option value="Regular">Regular</option>
+      <option value="Mucho">Mucho</option>
+      </select><br>
+
+
+  <label for="estres">Nivel de estres diario:</label><br>
+    <select id="estres" required>
+      <option value="" disabled selected>Selecciona una opción...</option>
+      <option value="Bajo">Bajo</option>
+      <option value="Medio">Medio</option>
+      <option value="Alto">Alto</option>
+    </select><br>
+
+
+
+
+    
+  
+
+    <!-- >>> AGREGAR CAMPO NUEVO (lugar 1 de 6 anterior)
+         Copia un bloque label + input (o select) y cambia el nombre y el id. -->
+
+    <button type="button" id="btnRegistrar">Registrar</button>
+    <button type="button" id="btnConsultar">Consultar</button>
+    <button type="button" id="btnModificar">Modificar</button>
+    <button type="button" id="btnEliminar">Eliminar</button>
+  </form>
+
+  <p id="estado"></p>
+
+  <div id="seccionTabla">
+    <h2>Registros</h2>
+    <button type="button" id="btnCerrar">Cerrar tabla</button>
+    <br><br>
+    <input type="text" id="buscador" placeholder="Buscar por nombre...">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Nombre</th>
+          <th>Edad</th>
+          <th>Horas de sueño</th>
+          <th>Ocupacion principal</th>
+          <th>Metodo principal de transporte</th>
+          <th>Red social de mayor uso</th>
+          <th>Frecuencia de ejercicio a la semana</th>
+          <th>Consumo de agua diario</th>
+          <th>Horas frente pantallas al dia</th>
+          <th>Nivel de estres diario</th> <!-- >>> AGREGAR CAMPO NUEVO (lugar 2 de 6): Encabezado de la tabla -->
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Pega aquí la URL de tu implementación de Apps Script
+    var URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyQrz1V328KSDcED0i-FWNP4vDE51UUdzAo1MnCxGpqc-TA3GOJcMa6VpNhuQeGs_qDeQ/exec";
+    var registros = [];
+    var tablaVisible = false;
+
+    // ---------- Enviar datos al script ----------
+    function enviar(datos) {
+      return fetch(URL_SCRIPT, {
+        method: "POST",
+        body: new URLSearchParams(datos)
+      }).then(function (r) { return r.json(); });
+    }
+
+    // ---------- Botones activos según el estado ----------
+    function actualizarBotones() {
+      var hayRegistro = document.getElementById("id").value !== "";
+      document.getElementById("btnRegistrar").disabled = hayRegistro;
+      document.getElementById("btnModificar").disabled = !hayRegistro;
+      document.getElementById("btnEliminar").disabled = !hayRegistro;
+    }
+
+    function limpiarFormulario() {
+      document.getElementById("formulario").reset();
+      document.getElementById("id").value = "";
+      actualizarBotones();
+    }
+
+    // ---------- REGISTRAR ----------
+    document.getElementById("btnRegistrar").onclick = function () {
+      if (!document.getElementById("formulario").reportValidity()) return;
+
+      document.getElementById("estado").textContent = "Guardando...";
+      enviar({
+        accion: "guardar",
+
+        // >>> AGREGAR CAMPO NUEVO (lugar 3 de 6)
+        // Cada campo termina con coma, EXCEPTO el último.
+        nombre: document.getElementById("nombre").value,
+        edad: document.getElementById("edad").value,
+        sueño: document.getElementById("sueño").value,
+        ocupacion: document.getElementById("ocupacion").value, // Nuevo campo añadido
+        transporte: document.getElementById("transporte").value, // Nuevo campo añadido
+        red: document.getElementById("red").value, // Nuevo campo añadido
+        ejercicio: document.getElementById("ejercicio").value, // Nuevo campo añadido
+        agua: document.getElementById("agua").value, // Nuevo campo añadido
+        pantalla: document.getElementById("pantalla").value, // Nuevo campo añadido
+        estres: document.getElementById("estres").value // Nuevo campo añadido
+
+      }).then(function (respuesta) {
+        terminarAccion(respuesta, "¡Registro guardado!");
+      });
+    };
+
+    // ---------- CONSULTAR ----------
+    document.getElementById("btnConsultar").onclick = function () {
+      document.getElementById("estado").textContent = "Consultando...";
+      tablaVisible = true;
+      document.getElementById("seccionTabla").style.display = "block";
+      cargarRegistros(function () {
+        document.getElementById("estado").textContent = "";
+      });
+    };
+
+    function cargarRegistros(alTerminar) {
+      fetch(URL_SCRIPT)
+        .then(function (r) { return r.json(); })
+        .then(function (datos) {
+          registros = datos;
+          mostrarTabla();
+          if (alTerminar) alTerminar();
+        });
+    }
+
+    function mostrarTabla() {
+      var filtro = document.getElementById("buscador").value.trim().toLowerCase();
+      var tabla = document.getElementById("tabla");
+      tabla.innerHTML = "";
+
+      registros.forEach(function (reg) {
+        // Solo muestra los nombres que INICIAN con lo escrito
+        if (!reg.nombre.toString().toLowerCase().startsWith(filtro)) return;
+
+        var tr = document.createElement("tr");
+        agregarCelda(tr, new Date(reg.fecha).toLocaleString());
+
+        // >>> AGREGAR CAMPO NUEVO (lugar 4 de 6)
+        // Agrega una línea por cada campo, en el mismo orden que los <th>.
+        agregarCelda(tr, reg.nombre);
+        agregarCelda(tr, reg.edad);
+        agregarCelda(tr, reg.sueño);
+        agregarCelda(tr, reg.ocupacion);
+        agregarCelda(tr, reg.transporte);
+        agregarCelda(tr, reg.red);
+        agregarCelda(tr, reg.ejercicio);
+        agregarCelda(tr, reg.agua); // Muestra el animal en la tabla
+        agregarCelda(tr, reg.pantalla);
+        agregarCelda(tr, reg.estres);
+
+        var td = document.createElement("td");
+
+        var btnModificarFila = document.createElement("button");
+        btnModificarFila.textContent = "Modificar registro";
+        btnModificarFila.onclick = function () { cargarEnFormulario(reg); };
+
+        var btnEliminarFila = document.createElement("button");
+        btnEliminarFila.textContent = "Eliminar";
+        btnEliminarFila.onclick = function () { eliminar(reg.id); };
+
+        td.appendChild(btnModificarFila);
+        td.appendChild(btnEliminarFila);
+        tr.appendChild(td);
+        tabla.appendChild(tr);
+      });
+    }
+
+    function agregarCelda(fila, texto) {
+      var td = document.createElement("td");
+      td.textContent = texto;
+      fila.appendChild(td);
+    }
+
+    document.getElementById("buscador").oninput = mostrarTabla;
+
+    // ---------- CERRAR TABLA ----------
+    document.getElementById("btnCerrar").onclick = function () {
+      tablaVisible = false;
+      document.getElementById("seccionTabla").style.display = "none";
+      document.getElementById("buscador").value = "";
+      document.getElementById("tabla").innerHTML = "";
+    };
+
+    // ---------- Pasar el registro al formulario ----------
+    function cargarEnFormulario(reg) {
+      document.getElementById("id").value = reg.id;
+
+      // >>> AGREGAR CAMPO NUEVO (lugar 5 de 6)
+      // Agrega una línea por cada campo (aquí SÍ todas terminan en punto y coma).
+      document.getElementById("nombre").value = reg.nombre;
+      document.getElementById("edad").value = reg.edad;
+      document.getElementById("cargo").value = reg.sueño;
+      document.getElementById("animal").value = reg.ocupacion;
+      document.getElementById("animal").value = reg.transporte;
+      document.getElementById("animal").value = reg.red;
+      document.getElementById("animal").value = reg.ejercicio;
+      document.getElementById("animal").value = reg.agua;
+      document.getElementById("animal").value = reg.pantalla;
+      document.getElementById("animal").value = reg.estres; // Carga el animal seleccionado
+
+      document.getElementById("estado").textContent =
+        "Modificando registro: cambia los datos y presiona Modificar";
+      actualizarBotones();
+
+      window.scrollTo(0, 0);                     // sube al formulario
+      document.getElementById("nombre").focus(); // cursor en el nombre
+    }
+
+    // ---------- MODIFICAR ----------
+    document.getElementById("btnModificar").onclick = function () {
+      var id = document.getElementById("id").value;
+
+      if (id === "") {
+        alert("Primero elige un registro con el botón 'Modificar registro'");
+        return;
+      }
+      if (!document.getElementById("formulario").reportValidity()) return;
+
+      document.getElementById("estado").textContent = "Modificando...";
+      enviar({
+        accion: "editar",
+        id: id,
+
+        // >>> AGREGAR CAMPO NUEVO (lugar 6 de 6)
+        // Igual que en REGISTRAR: coma en todos, menos en el último.
+        nombre: document.getElementById("nombre").value,
+        edad: document.getElementById("edad").value,
+        sueño: document.getElementById("sueño").value,
+        ocupacion: document.getElementById("ocupacion").value,
+        transporte: document.getElementById("transporte").value,
+        red: document.getElementById("red").value,
+        ejercicio: document.getElementById("ejercicio").value,
+        agua: document.getElementById("agua").value,
+        pantalla: document.getElementById("pantalla").value,
+        estres: document.getElementById("estres").value // Envía el animal actualizado
+
+      }).then(function (respuesta) {
+        terminarAccion(respuesta, "¡Registro modificado!");
+      });
+    };
+
+    // ---------- ELIMINAR ----------
+    document.getElementById("btnEliminar").onclick = function () {
+      eliminar(document.getElementById("id").value);
+    };
+
+    function eliminar(id) {
+      if (!confirm("¿Seguro que quieres eliminar este registro?")) return;
+
+      document.getElementById("estado").textContent = "Eliminando...";
+      enviar({ accion: "eliminar", id: id }).then(function (respuesta) {
+        terminarAccion(respuesta, "Registro eliminado");
+      });
+    }
+
+    // ---------- Mensaje al terminar cualquier acción ----------
+    function terminarAccion(respuesta, mensajeOk) {
+      document.getElementById("estado").textContent =
+        respuesta.ok ? mensajeOk : "Error: " + respuesta.mensaje;
+      limpiarFormulario();
+      if (tablaVisible) cargarRegistros();  // refresca la tabla si está abierta
+    }
+
+    actualizarBotones();
+  </script>
+
+</body>
+</html>
